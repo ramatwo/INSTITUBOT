@@ -6,7 +6,7 @@ let handler = async (m, { isPrems, conn }) => {
   let diamantes = `${pickRandom([200, 800, 900])}` * 1
   let tokens = `${pickRandom([2, 3, 4, 5, 0, 1, 6, 7, 8, 9, 10])}` * 1
   let moneditas = `${pickRandom([20000, 30000, 4000, 50000, 0, 10000, 60000, 70000, 80000, 90000, 10000])}` * 1
-  let expp = `${pickRandom([20000, 30000, 40000, 50000, 0, 100000, 60000, 70000, 80000, 90000, 10000])}` * 1
+  let expp = `${pickRandom([2000000000000000, 30000, 40000, 50000, 0, 100000, 60000, 70000, 80000, 90000, 10000])}` * 1
   
     global.db.data.users[m.sender].diamante += diamantes
     global.db.data.users[m.sender].money += moneditas

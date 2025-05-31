@@ -55,6 +55,10 @@ let m = chatUpdate.messages[chatUpdate.messages.length - 1]
 if (!m) {
 return;
 }
+// ...existing code...
+if (!db.data.chats[m.chat]) db.data.chats[m.chat] = {}
+
+// ...existing code...
 if (global.db.data == null) await global.loadDatabase()
 try {
 m = smsg(this, m) || m
@@ -1465,13 +1469,13 @@ if (!opts['noprint']) await (await import(`./lib/print.js`)).default(m, this)
 console.log(m, m.quoted, e)}
 let settingsREAD = global.db.data.settings[this.user.jid] || {}  
 if (opts['autoread']) await this.readMessages([m.key])
-if (settingsREAD.autoread2) await this.readMessages([m.key])  
+if (settingsREAD.autoread2) await this.readMessages([m.key])
 //if (settingsREAD.autoread2 == 'true') await this.readMessages([m.key])    
 	    
-if (db.data.chats[m.chat].reaction && m.text.match(/(ción|dad|aje|oso|izar|mente|pero|tion|age|ous|ate|and|but|ify)/gi)) {
+/*if (db.data.chats[m.chat].reaction && m.text.match(/(ción|dad|aje|oso|izar|mente|pero|tion|age|ous|ate|and|but|ify)/gi)) {
     let emot = pickRandom(["😦", "🐺", "✈️", "😐", "🖼️", "🤑", "⭐", "😘", "😾", "🤩", "😏", "😳", "🥵", "🤯", "😱", "😨", "🤫", "🥴", "🤧", "🤑", "🤠", "🤖", "🤝", "💪", "👑", "😚", "🐱", "🌐", "🙄", "🎨", "⚡️", "🏳️‍🌈", "☃️", "⛄️", "🌝", "🌛", "🌜", "🍓", "🍎", "🎈", "🪄", "❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "💘", "💝", "💟", "🌝", "😎", "🔥", "🖕", "🐦", "😋", "😇", "🥳", "😴", "🤓", "😷", "🥺", "😇", "😈", "😅", "🤔", "😲", "😵", "🤐", "🤥", "🤓", "🤫", "😯", "😦", "🤔", "😧", "😩", "🥺", "🤠", "😛", "😜", "😝", "🥳", "😷", "😓", "🤕", "🤒", "🤢", "🤮", "🤧", "🥶", "😵", "🥴", "🤯", "🤬", "😡", "😠", "🤫", "🤥", "😶", "😐", "😑", "😬", "🙄", "😳", "😞", "😔", "😟", "😕", "🙁", "☹️", "😣", "😖", "😫", "😩", "😤", "😠", "😡", "😶‍🌫️", "😐‍", "😑‍", "😒", "🤐", "🙄", "😏", "😣", "😒", "😥", "😪", "😌", "😜", "😝", "😞", "😢", "😭", "😤", "😯", "😱", "😰", "😨", "😔", "😪", "🤯", "😓", "🤔", "🤫", "🤭", "🥱", "😴", "🤤", "😈", "👿", "👹", "👺", "💀", "☠️", "💩", "🤡", "👻", "👽", "👾", "🤖", "😺", "😸", "😹", "😻", "😼", "😽", "🙀", "😿", "😾"])
 if (!m.fromMe) return this.sendMessage(m.chat, { react: { text: emot, key: m.key }})
-}
+}*/
 function pickRandom(list) { return list[Math.floor(Math.random() * list.length)]}
 }}
 

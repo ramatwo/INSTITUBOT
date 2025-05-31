@@ -1,7 +1,3 @@
-/* hecho por https://github.com/ramardo/DIEGO-OFC*/
-
-//import MessageType from '@adiwajshing/baileys'
-
 let handler = async (m, { conn, text, usedPrefix, command, groupMetadata }) => {
 let _user = "524811096003@s.whatsapp.net"
 
@@ -37,7 +33,6 @@ await conn.sendMessage(
 handler.help = ["ddxp [@user]"];
 handler.tags = ["xp"];
 handler.command = ['salame'] 
-//handler.group = true;
 handler.rowner = true;
 export default handler;
 
