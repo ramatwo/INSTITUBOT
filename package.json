@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@whiskeysockets/baileys": "^7.0.0-rc.9",
-    "better-sqlite3": "^11.10.0",
+    "@seald-io/nedb": "^4.1.1",
     "cfonts": "^3.3.0",
     "chalk": "^5.4.1",
     "node-cache": "^5.1.2",
