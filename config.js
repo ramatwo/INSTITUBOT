@@ -5,7 +5,7 @@
 // ► OWNERS: Números con rango máximo (sin +, sin espacios)
 // Ejemplo: '5491162480909'
 global.owner = [
-  ['TUNUMERO', 'Admin Principal', true],
+  ['TUNUMERO', 'Admin', true],
 ]
 
 // ► ID del Canal de WhatsApp donde se publicarán los avisos

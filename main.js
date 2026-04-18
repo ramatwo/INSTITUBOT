@@ -175,12 +175,12 @@ async function iniciarBot() {
     if (connection === 'open') {
       reconnectAttempts = 0
       const usuario = global.conn.user
-      console.log(chalk.green(`\n[✅] Bot conectado como: ${usuario?.name || usuario?.id}`))
+      console.log(chalk.green(`[CONECTADO] Bot: ${usuario?.name || usuario?.id}`))
 
       // Iniciar cron job de envíos
       iniciarCron(global.conn)
 
-      console.log(chalk.cyan(`[🤖] ${global.botNombre} listo para recibir comandos\n`))
+      console.log(chalk.cyan(`[SISTEMA] Listo para recibir comandos\n`))
     }
 
     if (connection === 'close') {
@@ -188,7 +188,7 @@ async function iniciarBot() {
       const esCierre = razon === DisconnectReason.loggedOut || razon === 401
 
       if (esCierre) {
-        console.log(chalk.red('\n[🔴] Sesión cerrada por WhatsApp. Eliminando credenciales...'))
+        console.log(chalk.red('[ERROR] Sesion terminada. Eliminando credenciales...'))
         try { fs.rmSync(global.authFile, { recursive: true }) } catch (_) {}
         process.exit(0)
       }
@@ -196,10 +196,10 @@ async function iniciarBot() {
       if (reconnectAttempts < MAX_RECONNECT) {
         reconnectAttempts++
         const delay = Math.min(5000 * reconnectAttempts, 60000)
-        console.log(chalk.yellow(`\n[🔄] Reconectando en ${delay / 1000}s... (Intento ${reconnectAttempts}/${MAX_RECONNECT})`))
+        console.log(chalk.yellow(`[RECONECTANDO] Intento ${reconnectAttempts}/${MAX_RECONNECT} en ${delay / 1000}s...`))
         setTimeout(iniciarBot, delay)
       } else {
-        console.error(chalk.red(`\n[❌] Se superó el límite de reconexiones (${MAX_RECONNECT}). Deteniendo bot.`))
+        console.error(chalk.red(`[ERROR] Limite de reconexiones alcanzado. Deteniendo.`))
         process.exit(1)
       }
     }

@@ -68,20 +68,26 @@ export async function handler(chatUpdate) {
   m = smsg(this, m)
   if (!m) return
 
-  // Solo textos
-  if (!m.text || typeof m.text !== 'string') return
-
-  // Ignorar grupos (bot solo responde en privado)
-  if (m.isGroup) return
-
-  // Ignorar mensajes propios
-  if (m.fromMe) return
+  const numero = m.sender?.split('@')[0]
+  if (!numero) return
 
   // Detectar prefijo
   const prefijo = global.prefix || '.'
-  if (!m.text.startsWith(prefijo)) return
+  const esComando = m.text.startsWith(prefijo)
 
-  // Parsear comando y args
+  // Ignorar si no es texto
+  if (!m.text || typeof m.text !== 'string') return
+
+  // Ignorar grupos (Descomentá si querés que el bot responda en grupos)
+  // if (m.isGroup) return
+
+  // Ignorar mensajes propios si NO son comandos
+  if (m.fromMe && !esComando) return
+
+  // Ignorar si no es comando
+  if (!esComando) return
+
+  // Parsear comando
   const sinPrefijo = m.text.slice(prefijo.length).trim()
   const partes     = sinPrefijo.split(/\s+/)
   const cmdRaw     = partes[0]?.toLowerCase() || ''
@@ -90,11 +96,8 @@ export async function handler(chatUpdate) {
 
   if (!cmdRaw) return
 
-  const numero = m.sender?.split('@')[0]
-  if (!numero) return
-
-  // Log
-  console.log(chalk.gray(`[📨] ${numero}: ${prefijo}${cmdRaw} ${textoCompleto.substring(0, 60)}`))
+  // Log limpio
+  console.log(chalk.cyan(`[MSG] ${numero}: ${prefijo}${cmdRaw}`))
 
   // Buscar plugin
   const plugin = COMANDOS[cmdRaw]
@@ -157,7 +160,7 @@ export async function handler(chatUpdate) {
       conn: this
     })
   } catch (e) {
-    console.error(chalk.red(`[❌] Error en ${prefijo}${cmdRaw}:`), e)
+    console.error(chalk.red(`[ERROR] en ${cmdRaw}:`), e.message)
     await this.reply(m.chat,
       `❌ Error interno al ejecutar el comando.\n\`\`\`${e.message}\`\`\``, m
     ).catch(() => {})

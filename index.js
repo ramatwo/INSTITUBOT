@@ -26,14 +26,14 @@ const ramLibre = (os.freemem() / 1024 ** 3).toFixed(2)
 const hora = new Date().toLocaleString('es-AR', { hour12: false })
 
 console.log(chalk.cyan(`
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃   🏫  InstituBot  v1.0.0     ┃
-  ┃   Sistema de Comunicados     ┃
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-  ┃ 🖥️  ${os.type()} ${os.arch()}
-  ┃ 💾  RAM: ${ramLibre} GB libre / ${ramTotal} GB total
-  ┃ ⏰  ${hora}
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  +------------------------------+
+  |      InstituBot  v1.0.0      |
+  |    Sistema de Comunicados    |
+  +------------------------------+
+  | OS:   ${os.type()} ${os.arch()}
+  | RAM:  ${ramLibre} GB libre / ${ramTotal} GB total
+  | HORA: ${hora}
+  +------------------------------
 `))
 
 // ── Proceso principal ────────────────────────────────────────────────────────
