@@ -5,13 +5,13 @@
 // ► OWNERS: Números con rango máximo (sin +, sin espacios)
 // Ejemplo: '5491162480909'
 global.owner = [
-  ['TUNUMERO', 'Admin', true],
+  ['5491162489898', 'Admin', true],
 ]
 
 // ► ID del Canal de WhatsApp donde se publicarán los avisos
 // Formato: '1234567890@newsletter'
 // Dejalo vacío y completalo cuando tengas el ID del canal.
-global.channelId = ''
+global.channelId = '120363425175355706@newsletter'
 
 // ► Nombre del bot (aparece en mensajes)
 global.botNombre = '🏫 InstituBot'
