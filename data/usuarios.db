@@ -1,4 +1,4 @@
-{"numero":"209032233152554","usuario":"rama","pin_hash":"5b10564b32ea564df50f0c56353b0b4ed3821fb86fc4555a4aa2461e76d07473","rango":"owner","loggedIn":1,"registrado":1,"createdAt":"2026-04-18T19:33:45.207Z","_id":"pfqpDVQcdStbzLAH"}
+{"numero":"280552062062770","usuario":"rama","pin_hash":"5b10564b32ea564df50f0c56353b0b4ed3821fb86fc4555a4aa2461e76d07473","rango":"owner","loggedIn":1,"registrado":1,"createdAt":"2026-04-27T22:24:06.602Z","_id":"NpeiGuUtd8DksVyV"}
 {"$$indexCreated":{"fieldName":"numero","unique":true,"sparse":false}}
 {"$$indexCreated":{"fieldName":"usuario","unique":true,"sparse":false}}
 {"$$indexCreated":{"fieldName":"numero","unique":true}}

@@ -35,7 +35,7 @@ const COMANDOS = {
 }
 
 // Comandos disponibles sin sesión
-const CMDS_SIN_SESION = new Set(['registro', 'menu'])
+const CMDS_SIN_SESION = new Set(['registro', 'menu', 'login'])
 
 // Comandos que requieren estar logueado (no basta con estar registrado)  
 const CMDS_REQUIEREN_LOGIN = new Set(['logout', 'enviar', 'programar', 'lista', 'editar', 'borrar', 'setrango', 'setcron'])
@@ -71,12 +71,12 @@ export async function handler(chatUpdate) {
   const numero = m.sender?.split('@')[0]
   if (!numero) return
 
+  // Ignorar si no es texto
+  if (!m.text || typeof m.text !== 'string') return
+
   // Detectar prefijo
   const prefijo = global.prefix || '.'
   const esComando = m.text.startsWith(prefijo)
-
-  // Ignorar si no es texto
-  if (!m.text || typeof m.text !== 'string') return
 
   // Ignorar grupos (Descomentá si querés que el bot responda en grupos)
   // if (m.isGroup) return
