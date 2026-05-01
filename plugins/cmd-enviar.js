@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-enviar.js — Comando .enviar [texto]
-// Publica el aviso inmediatamente en el canal de WhatsApp
-// ─────────────────────────────────────────────────────────────────────────────
 
 export async function run({ m, textoCompleto, userData, conn }) {
   const prefix = global.prefix || '.'

@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-setrango.js — Comando .setrango [número] [rango]
-// ─────────────────────────────────────────────────────────────────────────────
-
 export async function run({ m, args, db, conn }) {
   const prefix = global.prefix || '.'
 

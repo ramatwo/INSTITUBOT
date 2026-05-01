@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-login.js — Comando .login [usuario] [PIN]
-// ─────────────────────────────────────────────────────────────────────────────
-
 export async function run({ m, args, numero, db, conn }) {
   const prefix = global.prefix || '.'
 

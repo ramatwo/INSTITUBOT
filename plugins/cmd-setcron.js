@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-setcron.js — Comando .setcron [HH:MM]
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { reiniciarCron } from '../lib/cron.js'
 
 export async function run({ m, args, conn, db }) {

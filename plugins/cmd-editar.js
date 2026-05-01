@@ -1,6 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-editar.js — Comando .editar [id] [nuevo texto]
-// ─────────────────────────────────────────────────────────────────────────────
 
 export async function run({ m, args, db, conn }) {
   const prefix = global.prefix || '.'
@@ -22,7 +19,6 @@ export async function run({ m, args, db, conn }) {
     return conn.reply(m.chat, `❌ El nuevo contenido no puede estar vacío.`, m)
   }
 
-  // Obtener el anuncio antes de editarlo para mostrar el anterior
   const anuncio = await db.getAnuncio(id)
   const anteriorPreview = anuncio?.contenido
     ? (anuncio.contenido.length > 60 ? anuncio.contenido.substring(0, 60) + '...' : anuncio.contenido)

@@ -1,12 +1,6 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// main.js — Proceso principal de InstituBot
-// Gestiona la conexión con Baileys y orquesta todo el sistema
-// ─────────────────────────────────────────────────────────────────────────────
-
 import dns from 'dns'
 dns.setDefaultResultOrder('ipv4first')
 
-// Cargar configuración global
 import './config.js'
 
 import path, { join } from 'path'
@@ -40,22 +34,17 @@ const {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// ── Inicializar proto helpers ─────────────────────────────────────────────────
 protoType()
 serialize()
 
-// ── Inicializar DB ────────────────────────────────────────────────────────────
 global.db = getDB()
 
-// ── Opciones CLI ──────────────────────────────────────────────────────────────
 global.opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 const methodCodeQR = process.argv.includes('qr')
-const methodCode   = process.argv.includes('code') || !!global.botNumberCode
+const methodCode = process.argv.includes('code') || !!global.botNumberCode
 
-// Asegurar que existe la carpeta de sesión
 if (!fs.existsSync(global.authFile)) fs.mkdirSync(global.authFile, { recursive: true })
 
-// ── Consola readline ──────────────────────────────────────────────────────────
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -64,29 +53,21 @@ const rl = readline.createInterface({
 
 const question = (texto) => new Promise(resolve => rl.question(texto, ans => resolve(ans.trim())))
 
-// ── Filtrar ruidos de Baileys ──────────────────────────────────────────────────
 const noiseStrings = ['Closing stale open', 'Closing open session', 'Failed to decrypt', 'Session error', 'Closing session']
-;['log', 'warn', 'error'].forEach(method => {
-  const orig = console[method]
-  console[method] = function (...args) {
-    if (args.some(a => typeof a === 'string' && noiseStrings.some(n => a.includes(n)))) return
-    orig.apply(console, args)
-  }
-})
+  ;['log', 'warn', 'error'].forEach(method => {
+    const orig = console[method]
+    console[method] = function (...args) {
+      if (args.some(a => typeof a === 'string' && noiseStrings.some(n => a.includes(n)))) return
+      orig.apply(console, args)
+    }
+  })
 
-// ── Control de reconexión ─────────────────────────────────────────────────────
 let reconnectAttempts = 0
 const MAX_RECONNECT = 10
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Función principal de conexión
-// ═══════════════════════════════════════════════════════════════════════════════
 async function iniciarBot() {
   const { state, saveCreds } = await useMultiFileAuthState(global.authFile)
   const { version } = await fetchLatestBaileysVersion()
   const msgRetryCache = new NodeCache({ stdTTL: 0, checkperiod: 0 })
-
-  // Opción de emparejamiento por número
   let opcion
   const credsExisten = fs.existsSync(join(global.authFile, 'creds.json'))
 
@@ -104,7 +85,6 @@ async function iniciarBot() {
     } while (!/^[12]$/.test(opcion))
   }
 
-  // ── Crear socket ────────────────────────────────────────────────────────────
   global.conn = makeWASocket({
     logger: pino({ level: 'silent' }),
     browser: ['Ubuntu', 'Chrome', '120.0.0'],
@@ -131,10 +111,8 @@ async function iniciarBot() {
     maxIdleTimeMs: 60000
   })
 
-  // Vincular store al socket
   store.bind(global.conn.ev)
 
-  // ── Código de emparejamiento ────────────────────────────────────────────────
   if (!credsExisten && (opcion === '2' || methodCode)) {
     if (!global.conn.authState.creds.registered) {
       let numBot = global.botNumberCode || ''
@@ -158,12 +136,7 @@ async function iniciarBot() {
     }
   }
 
-  // ── Eventos del socket ──────────────────────────────────────────────────────
-
-  // Credenciales actualizadas
   global.conn.ev.on('creds.update', saveCreds)
-
-  // Actualización de conexión
   global.conn.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect, qr } = update
 
@@ -177,7 +150,6 @@ async function iniciarBot() {
       const usuario = global.conn.user
       console.log(chalk.green(`[CONECTADO] Bot: ${usuario?.name || usuario?.id}`))
 
-      // Iniciar cron job de envíos
       iniciarCron(global.conn)
 
       console.log(chalk.cyan(`[SISTEMA] Listo para recibir comandos\n`))
@@ -189,7 +161,7 @@ async function iniciarBot() {
 
       if (esCierre) {
         console.log(chalk.red('[ERROR] Sesion terminada. Eliminando credenciales...'))
-        try { fs.rmSync(global.authFile, { recursive: true }) } catch (_) {}
+        try { fs.rmSync(global.authFile, { recursive: true }) } catch (_) { }
         process.exit(0)
       }
 
@@ -205,7 +177,6 @@ async function iniciarBot() {
     }
   })
 
-  // Mensajes entrantes — pasar al handler
   global.conn.ev.on('messages.upsert', async (chatUpdate) => {
     try {
       await handler.call(global.conn, chatUpdate)
@@ -215,15 +186,14 @@ async function iniciarBot() {
   })
 }
 
-// ── Manejo de señales ──────────────────────────────────────────────────────────
 process.on('SIGINT', async () => {
   console.log(chalk.yellow('\n[⏹️] Cerrando InstituBot...'))
-  try { global.db?.close() } catch (_) {}
+  try { global.db?.close() } catch (_) { }
   process.exit(0)
 })
 
 process.on('SIGTERM', async () => {
-  try { global.db?.close() } catch (_) {}
+  try { global.db?.close() } catch (_) { }
   process.exit(0)
 })
 
@@ -236,5 +206,4 @@ process.on('unhandledRejection', (reason) => {
   if (!isConnClose) console.error(chalk.red('[❌] Promesa rechazada:'), reason)
 })
 
-// ── Arrancar ───────────────────────────────────────────────────────────────────
 iniciarBot()

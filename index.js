@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// index.js — Punto de entrada de InstituBot
-// Muestra el banner y lanza el proceso principal (main.js) como worker.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { setupMaster, fork } from 'cluster'
@@ -14,7 +9,6 @@ import os from 'os'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-// ── Banner ──────────────────────────────────────────────────────────────────
 cfonts.say('Institu\nBot', {
   font: 'chrome',
   align: 'center',
@@ -36,7 +30,6 @@ console.log(chalk.cyan(`
   +------------------------------
 `))
 
-// ── Proceso principal ────────────────────────────────────────────────────────
 let isRunning = false
 
 async function start(file) {
@@ -66,7 +59,6 @@ async function start(file) {
     }
   })
 
-  // Reenviar input de consola al proceso hijo
   const rl = createInterface(process.stdin, process.stdout)
   rl.on('line', (line) => {
     const trimmed = line.trim()

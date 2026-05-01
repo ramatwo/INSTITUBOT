@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-menu.js — Comando .menu
-// Muestra los comandos disponibles según el rango del usuario
-// ─────────────────────────────────────────────────────────────────────────────
-
 export async function run({ m, rango, esAdmin, esOwner, userData, conn }) {
   const bot = global.botNombre || '🏫 InstituBot'
   const prefix = global.prefix || '.'
@@ -15,7 +10,6 @@ export async function run({ m, rango, esAdmin, esOwner, userData, conn }) {
 ┃ 📋 *Menú de Comandos*
 ┣━━━━━━━━━━━━━━━━━━━━━━━`.trim()
 
-  // Bloque de sesión (disponible para todos)
   texto += `\n┃\n┃ 👤 *Sesión*`
 
   if (!logeado) {
@@ -33,7 +27,6 @@ export async function run({ m, rango, esAdmin, esOwner, userData, conn }) {
 ┃ 🎖️ Rango: *${rango}*`
   }
 
-  // Bloque de administración (solo admins y owners)
   if (esAdmin) {
     texto += `
 ┃

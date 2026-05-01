@@ -1,6 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-lista.js — Comando .lista
-// ─────────────────────────────────────────────────────────────────────────────
 
 export async function run({ m, db, conn }) {
   const pendientes = await db.listarPendientes()
@@ -13,7 +10,7 @@ export async function run({ m, db, conn }) {
     )
   }
 
-  // Agrupar por fecha
+
   const grupos = {}
   for (const a of pendientes) {
     if (!grupos[a.fecha_envio]) grupos[a.fecha_envio] = []
@@ -27,7 +24,7 @@ export async function run({ m, db, conn }) {
     const [anio, mes, dia] = fecha.split('-')
     texto += `\n📅 *${dia}/${mes}/${anio}*\n`
     for (const a of anuncios) {
-      const shortId = a._id.substring(0, 8)  // Primeros 8 chars del ID NeDB
+      const shortId = a._id.substring(0, 8)
       const preview = a.contenido.length > 75
         ? a.contenido.substring(0, 75) + '...'
         : a.contenido

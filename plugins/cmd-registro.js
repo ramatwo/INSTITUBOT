@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-registro.js — Comando .registro [usuario] [PIN]
-// ─────────────────────────────────────────────────────────────────────────────
-
 export async function run({ m, args, numero, db, conn }) {
   const prefix = global.prefix || '.'
 
@@ -19,7 +15,6 @@ export async function run({ m, args, numero, db, conn }) {
   const nombreUsuario = args[0]
   const pin = args[1]
 
-  // Validar nombre: solo letras, números, guiones y guiones bajos (3-20 chars)
   if (!/^[a-zA-Z0-9_\-]{3,20}$/.test(nombreUsuario)) {
     return conn.reply(m.chat,
       `❌ Nombre de usuario inválido.\n` +
@@ -29,7 +24,6 @@ export async function run({ m, args, numero, db, conn }) {
     )
   }
 
-  // Validar PIN
   if (!/^\d{4}$/.test(String(pin))) {
     return conn.reply(m.chat, global.MSG?.pinInvalido || '❌ El PIN debe tener exactamente 4 dígitos numéricos.', m)
   }

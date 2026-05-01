@@ -1,6 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// plugins/cmd-borrar.js — Comando .borrar [id]
-// ─────────────────────────────────────────────────────────────────────────────
 
 export async function run({ m, args, db, conn }) {
   const prefix = global.prefix || '.'
@@ -17,7 +14,7 @@ export async function run({ m, args, db, conn }) {
 
   const id = args[0]
 
-  // Obtener preview antes de borrar
+
   const anuncio = await db.getAnuncio(id)
   const preview = anuncio?.contenido
     ? (anuncio.contenido.length > 80 ? anuncio.contenido.substring(0, 80) + '...' : anuncio.contenido)
