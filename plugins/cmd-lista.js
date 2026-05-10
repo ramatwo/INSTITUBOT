@@ -1,40 +1,52 @@
 
 export async function run({ m, db, conn }) {
   const pendientes = await db.listarPendientes()
+  const enviados = await db.listarEnviados(5)
 
-  if (pendientes.length === 0) {
+  if (pendientes.length === 0 && enviados.length === 0) {
     return conn.reply(m.chat,
-      `📋 *Lista de comunicados pendientes*\n\n` +
-      `✅ No hay comunicados programados actualmente.`,
+      `📋 *Lista de comunicados*\n\n` +
+      `✅ No hay comunicados registrados actualmente.`,
       m
     )
   }
 
-
-  const grupos = {}
-  for (const a of pendientes) {
-    if (!grupos[a.fecha_envio]) grupos[a.fecha_envio] = []
-    grupos[a.fecha_envio].push(a)
-  }
-
-  let texto = `📋 *Comunicados Pendientes* (${pendientes.length})\n`
+  let texto = `📋 *Lista de Comunicados*\n`
   texto += `━━━━━━━━━━━━━━━━━━━━━━━\n`
 
-  for (const [fecha, anuncios] of Object.entries(grupos)) {
-    const [anio, mes, dia] = fecha.split('-')
-    texto += `\n📅 *${dia}/${mes}/${anio}*\n`
-    for (const a of anuncios) {
-      const shortId = a._id.substring(0, 8)
-      const preview = a.contenido.length > 75
-        ? a.contenido.substring(0, 75) + '...'
+  if (pendientes.length > 0) {
+    texto += `\n⏳ *PENDIENTES (${pendientes.length})*\n`
+    const grupos = {}
+    for (const a of pendientes) {
+      if (!grupos[a.fecha_envio]) grupos[a.fecha_envio] = []
+      grupos[a.fecha_envio].push(a)
+    }
+
+    for (const [fecha, anuncios] of Object.entries(grupos)) {
+      const [anio, mes, dia] = fecha.split('-')
+      texto += `\n📅 *${dia}/${mes}/${anio}*\n`
+      for (const a of anuncios) {
+        const preview = a.contenido.length > 60
+          ? a.contenido.substring(0, 60) + '...'
+          : a.contenido
+        texto += `  ┣ ID: \`${a._id}\`\n  ┃  _${preview}_\n`
+      }
+    }
+  }
+
+  if (enviados.length > 0) {
+    texto += `\n\n✅ *ÚLTIMOS ENVIADOS*\n`
+    for (const a of enviados) {
+      const preview = a.contenido.length > 60
+        ? a.contenido.substring(0, 60) + '...'
         : a.contenido
-      texto += `  ┣ ID: \`${shortId}\`\n  ┃  _${preview}_\n`
+      texto += `  ┣ ID: \`${a._id}\`\n  ┃  _${preview}_\n`
     }
   }
 
   texto += `\n━━━━━━━━━━━━━━━━━━━━━━━\n`
   texto += `Usá el ID completo en *.editar* o *.borrar*.\n`
-  texto += `💡 Tip: Podés copiar el ID tocándolo.`
+  texto += `💡 Tip: Podés borrar uno ya enviado para quitarlo del canal.`
 
   await conn.reply(m.chat, texto.trim(), m)
 }

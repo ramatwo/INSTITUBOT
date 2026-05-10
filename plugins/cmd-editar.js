@@ -6,7 +6,7 @@ export async function run({ m, args, db, conn }) {
     return conn.reply(m.chat,
       `✏️ *Editar comunicado*\n\n` +
       `Uso: *${prefix}editar [ID] [nuevo texto]*\n\n` +
-      `Ejemplo:\n_${prefix}editar abc12345 Reunión pospuesta para el viernes._\n\n` +
+      `Ejemplo:\n_${prefix}editar T27B Reunión pospuesta para el viernes._\n\n` +
       `Usá *${prefix}lista* para ver los IDs disponibles.`,
       m
     )
@@ -25,13 +25,28 @@ export async function run({ m, args, db, conn }) {
     : null
 
   const resultado = await db.editarAnuncio(id, nuevoContenido)
-
+ 
   if (!resultado.ok) {
     return conn.reply(m.chat, resultado.msg, m)
   }
 
+  // Si ya fue enviado, intentar editarlo en WhatsApp
+  if (resultado.fueEnviado && resultado.msgKey) {
+    try {
+      const textoEditado = "*📣 • ANUNCIO OFICIAL (Editado)*\n\n" + nuevoContenido
+      await conn.sendMessage(resultado.msgKey.remoteJid, { 
+        text: textoEditado, 
+        edit: resultado.msgKey 
+      })
+    } catch (e) {
+      console.error('[❌] Error al intentar editar mensaje en WhatsApp:', e.message)
+    }
+  }
+ 
   await conn.reply(m.chat,
-    `✅ *Comunicado editado*\n\n` +
+    `✅ *Comunicado editado*\n` +
+    (resultado.fueEnviado ? `_(También se actualizó en WhatsApp)_` : '') +
+    `\n` +
     (anteriorPreview ? `📌 Anterior:\n~_${anteriorPreview}_~\n\n` : '') +
     `📝 Nuevo:\n_${nuevoContenido}_`,
     m

@@ -80,7 +80,7 @@ export async function handler(chatUpdate) {
   const plugin = COMANDOS[cmdRaw]
   if (!plugin) {
     await this.reply(m.chat,
-      `❓ Comando desconocido: *${prefijo}${cmdRaw}*\nUsá *${prefijo}menu* para ver los comandos disponibles.`,
+      `[❓] Comando desconocido: *${prefijo}${cmdRaw}*\nUsá *${prefijo}menu* para ver los comandos.`,
       m
     )
     return
@@ -99,19 +99,19 @@ export async function handler(chatUpdate) {
 
   if (!CMDS_SIN_SESION.has(cmdRaw) && !logeado && !esOwner) {
     await this.reply(m.chat, global.MSG?.noSesion ||
-      `❌ Necesitás iniciar sesión.\nUsá *.registro [usuario] [PIN]* o *.login [usuario] [PIN]*`, m)
+      `[❌] Necesitás iniciar sesión.\nUsá *.registro [usuario] [PIN]* o *.login [usuario] [PIN]*`, m)
     return
   }
 
   if (CMDS_REQUIEREN_LOGIN.has(cmdRaw) && !logeado && !esOwner) {
     await this.reply(m.chat,
-      `❌ Necesitás estar logueado para usar este comando.\nUsá *.login [usuario] [PIN]*`, m)
+      `[❌] Necesitás estar logueado para usar este comando.\nUsá *.login [usuario] [PIN]*`, m)
     return
   }
 
   if (CMDS_ADMIN.has(cmdRaw) && !esAdmin) {
     await this.reply(m.chat, global.MSG?.noAdmin ||
-      '⛔ No tenés permisos para usar este comando. Solo los administradores pueden hacerlo.', m)
+      '[⛔] No tenés permisos para usar este comando.', m)
     return
   }
 
@@ -131,7 +131,7 @@ export async function handler(chatUpdate) {
   } catch (e) {
     console.error(chalk.red(`[ERROR] en ${cmdRaw}:`), e.message)
     await this.reply(m.chat,
-      `❌ Error interno al ejecutar el comando.\n\`\`\`${e.message}\`\`\``, m
+      `[❌] Error interno al ejecutar el comando.\n\`\`\`${e.message}\`\`\``, m
     ).catch(() => { })
   }
 }

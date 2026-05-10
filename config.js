@@ -4,7 +4,7 @@ global.owner = [
   ['5491162489898', 'Admin', true],
 ]
 
-global.channelId = '120363425175355706@newsletter'
+global.channelId = '120363428558178460@g.us'
 
 global.botNombre = 'InstituBot'
 

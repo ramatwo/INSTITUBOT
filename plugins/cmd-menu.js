@@ -32,23 +32,23 @@ export async function run({ m, rango, esAdmin, esOwner, userData, conn }) {
 ┃
 ┃ 📣 *Comunicados*
 ┃  • ${prefix}enviar [texto]
-┃    _Publicar aviso inmediatamente_
+┃    _publicar aviso en el momento_
 ┃  • ${prefix}programar [DD/MM] [texto]
-┃    _Programar aviso para una fecha_
+┃    _programar aviso para una fecha_
 ┃  • ${prefix}lista
-┃    _Ver avisos pendientes con ID_
+┃    _ver avisos pendientes con ID_
 ┃  • ${prefix}editar [id] [nuevo texto]
-┃    _Editar contenido de un aviso_
+┃    _editar contenido de aviso_
 ┃  • ${prefix}borrar [id]
-┃    _Eliminar un aviso programado_
+┃    _eliminar aviso_
 ┃
-┃ ⚙️ *Administración*
+┃ ⚙️ *Administrar Sistema*
 ┃  • ${prefix}setrango [número] [rango]
-┃    _Cambiar rango de un usuario_
-┃    _Rangos: usuario / admin_
+┃    _cambia rango de usuario_
+┃    _rangos: usuario / admin_
 ┃  • ${prefix}setcron [HH:MM]
-┃    _Cambiar hora de envío automático_
-┃    _Actual: ${global.cronHora || '00:00'}_`
+┃    _cambia hora de envío automático_
+┃    ahora: ${global.cronHora || '00:00'}_`
   }
 
   texto += `\n┗━━━━━━━━━━━━━━━━━━━━━━━`

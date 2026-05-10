@@ -1,7 +1,9 @@
 
-export async function run({ m, textoCompleto, userData, conn }) {
+import { fechaHoyAR } from '../lib/cron.js'
+ 
+export async function run({ m, textoCompleto, userData, conn, db, numero }) {
   const prefix = global.prefix || '.'
-
+ 
   if (!textoCompleto.trim()) {
     return conn.reply(m.chat,
       `📣 *Enviar comunicado*\n\n` +
@@ -10,7 +12,7 @@ export async function run({ m, textoCompleto, userData, conn }) {
       m
     )
   }
-
+ 
   const channelId = global.channelId
   if (!channelId) {
     return conn.reply(m.chat,
@@ -19,12 +21,20 @@ export async function run({ m, textoCompleto, userData, conn }) {
       m
     )
   }
-
+ 
   try {
-    await conn.sendMessage(channelId, { text: textoCompleto.trim() })
+    const texto = textoCompleto.trim()
+    const sent = await conn.sendMessage(channelId, { text: "*📣 • ANUNCIO OFICIAL*\n\n" + texto })
+    
+    // Guardar en la base de datos como ya enviado
+    const hoy = fechaHoyAR()
+    const resultado = await db.crearAnuncio(texto, hoy, numero, 'enviado', sent.key)
+ 
     await conn.reply(m.chat,
       `[✅] *Publicado*\n\n` +
-      `📝 Contenido:\n_${textoCompleto.trim()}_`,
+      `🆔 ID: *${resultado.id}*\n` +
+      `📝 Contenido:\n_${texto}_\n\n` +
+      `Podés borrarlo del canal usando *${prefix}borrar ${resultado.id}*`,
       m
     )
   } catch (e) {

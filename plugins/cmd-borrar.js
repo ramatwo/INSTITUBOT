@@ -6,7 +6,7 @@ export async function run({ m, args, db, conn }) {
     return conn.reply(m.chat,
       `[🗑️] *Borrar comunicado*\n\n` +
       `Uso: *${prefix}borrar [ID]*\n\n` +
-      `Ejemplo: _${prefix}borrar abc12345_\n\n` +
+      `Ejemplo: _${prefix}borrar T27B_\n\n` +
       `Usá *${prefix}lista* para ver los IDs disponibles.`,
       m
     )
@@ -21,14 +21,37 @@ export async function run({ m, args, db, conn }) {
     : null
 
   const resultado = await db.borrarAnuncio(id)
-
+ 
   if (!resultado.ok) {
     return conn.reply(m.chat, resultado.msg, m)
   }
+ 
+  // Si ya fue enviado, intentar borrarlo del canal de WhatsApp
+  if (resultado.fueEnviado && resultado.msgKey) {
+    try {
+      const channelId = global.channelId
+      // Reconstruimos la key para asegurar que tenga los campos necesarios
+      const key = {
+        remoteJid: resultado.msgKey.remoteJid || channelId,
+        id: resultado.msgKey.id,
+        fromMe: true
+      }
 
+      if (key.remoteJid && key.id) {
+        // En grupos estándar, el borrado es directo con sendMessage({ delete: key })
+        await conn.sendMessage(key.remoteJid, { delete: key })
+      } else {
+        console.warn('[⚠️] No se pudo reconstruir la llave del mensaje para borrarlo.')
+      }
+    } catch (e) {
+      console.error('[❌] Error al intentar borrar mensaje del canal:', e.message)
+    }
+  }
+ 
   await conn.reply(m.chat,
     `[🗑️] *Comunicado eliminado*\n` +
-    (preview ? `\n📝 Contenido eliminado:\n~_${preview}_~` : ''),
+    (resultado.fueEnviado ? `_(También se intentó eliminar del canal)_` : '') +
+    (preview ? `\n\n📝 Contenido eliminado:\n~_${preview}_~` : ''),
     m
   )
 }

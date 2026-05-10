@@ -15,13 +15,13 @@ export async function run({ m, args, numero, db, conn }) {
   const contenido = args.slice(1).join(' ').trim()
 
   if (!contenido) {
-    return conn.reply(m.chat, '❌ Escribí el contenido del comunicado después de la fecha.', m)
+    return conn.reply(m.chat, '[❌] Escribí el contenido del comunicado después de la fecha.', m)
   }
 
 
   const matchFecha = fechaStr.match(/^(\d{1,2})\/(\d{1,2})$/)
   if (!matchFecha) {
-    return conn.reply(m.chat, `❌ Formato de fecha inválido. Usá *DD/MM*. Ejemplo: *25/05*`, m)
+    return conn.reply(m.chat, `[❌] Formato de fecha inválido. Usá *DD/MM*. Ejemplo: *25/05*`, m)
   }
 
   const dia = parseInt(matchFecha[1], 10)
@@ -36,7 +36,7 @@ export async function run({ m, args, numero, db, conn }) {
     fechaObj.getMonth() !== mes - 1 ||
     mes < 1 || mes > 12 || dia < 1 || dia > 31
   ) {
-    return conn.reply(m.chat, `❌ La fecha *${fechaStr}* no es válida.`, m)
+    return conn.reply(m.chat, `[❌] La fecha *${fechaStr}* no es válida.`, m)
   }
 
 
@@ -45,7 +45,7 @@ export async function run({ m, args, numero, db, conn }) {
   fechaObj.setHours(0, 0, 0, 0)
 
   if (fechaObj < hoyAR) {
-    return conn.reply(m.chat, `❌ La fecha *${fechaStr}* ya pasó. Elegí una fecha futura o de hoy.`, m)
+    return conn.reply(m.chat, `[❌] La fecha *${fechaStr}* ya pasó. Elegí una fecha futura o de hoy.`, m)
   }
 
   const mm = String(mes).padStart(2, '0')
@@ -55,12 +55,12 @@ export async function run({ m, args, numero, db, conn }) {
   const resultado = await db.crearAnuncio(contenido, fechaEnvio, numero)
 
   await conn.reply(m.chat,
-    `✅ *Comunicado programado*\n\n` +
+    `[✅] *Comunicado programado*\n\n` +
     `🆔 ID: *${resultado.id}*\n` +
     `📅 Fecha: *${dd}/${mm}/${anioAR}*\n` +
     `📝 Contenido:\n_${contenido}_\n\n` +
-    `Se publicará a las *${global.cronHora || '00:00'} hs* (AR).\n` +
-    `Podés modificarlo con *${prefix}editar ${resultado.id} [texto]* o borrarlo con *${prefix}borrar ${resultado.id}*.`,
+    `Se publica a las *${global.cronHora || '00:00'} hs* (AR).\n` +
+    `Se modifica con *${prefix}editar ${resultado.id} [texto]* o borrarlo con *${prefix}borrar ${resultado.id}*.`,
     m
   )
 }
