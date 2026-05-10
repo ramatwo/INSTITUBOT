@@ -24,9 +24,10 @@ export async function run({ m, textoCompleto, userData, conn, db, numero }) {
  
   try {
     const texto = textoCompleto.trim()
-    const sent = await conn.sendMessage(channelId, { text: "*📣 • ANUNCIO OFICIAL*\n\n" + texto })
+    const textoFinal = "*📣 • ANUNCIO OFICIAL*\n\nEstimadas familias, se les informa que " + texto
+    const sent = await conn.sendMessage(channelId, { text: textoFinal })
     
-    // Guardar en la base de datos como ya enviado
+    //guardar en db
     const hoy = fechaHoyAR()
     const resultado = await db.crearAnuncio(texto, hoy, numero, 'enviado', sent.key)
  

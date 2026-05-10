@@ -35,16 +35,15 @@ const CMDS_ADMIN = new Set(['enviar', 'programar', 'lista', 'editar', 'borrar', 
 
 const procesados = new Set()
 
-/**
- * Handler principal
- * @this {import('@whiskeysockets/baileys').WASocket}
- */
 export async function handler(chatUpdate) {
   if (!chatUpdate?.messages) return
+
+  const db = getDB()
 
   let m = chatUpdate.messages[chatUpdate.messages.length - 1]
   if (!m?.key) return
 
+  //evitar duplicados en 60s
   const msgId = m.key?.id
   if (msgId && procesados.has(msgId)) return
   if (msgId) {
@@ -64,7 +63,6 @@ export async function handler(chatUpdate) {
   const esComando = m.text.startsWith(prefijo)
 
   if (m.fromMe && !esComando) return
-
   if (!esComando) return
 
   const sinPrefijo = m.text.slice(prefijo.length).trim()
@@ -86,7 +84,6 @@ export async function handler(chatUpdate) {
     return
   }
 
-  const db = getDB()
   const userData = await db.getUsuario(numero).catch(() => null)
 
   const esOwner = (global.owner || []).some(([n]) =>
@@ -97,6 +94,7 @@ export async function handler(chatUpdate) {
   const rango = esOwner ? 'owner' : (userData?.rango || 'usuario')
   const esAdmin = rango === 'admin' || rango === 'owner'
 
+  //validar permisos y sesion
   if (!CMDS_SIN_SESION.has(cmdRaw) && !logeado && !esOwner) {
     await this.reply(m.chat, global.MSG?.noSesion ||
       `[❌] Necesitás iniciar sesión.\nUsá *.registro [usuario] [PIN]* o *.login [usuario] [PIN]*`, m)

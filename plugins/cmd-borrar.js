@@ -14,7 +14,6 @@ export async function run({ m, args, db, conn }) {
 
   const id = args[0]
 
-
   const anuncio = await db.getAnuncio(id)
   const preview = anuncio?.contenido
     ? (anuncio.contenido.length > 80 ? anuncio.contenido.substring(0, 80) + '...' : anuncio.contenido)
@@ -26,11 +25,10 @@ export async function run({ m, args, db, conn }) {
     return conn.reply(m.chat, resultado.msg, m)
   }
  
-  // Si ya fue enviado, intentar borrarlo del canal de WhatsApp
+  //borrar de whatsapp si ya se envio
   if (resultado.fueEnviado && resultado.msgKey) {
     try {
       const channelId = global.channelId
-      // Reconstruimos la key para asegurar que tenga los campos necesarios
       const key = {
         remoteJid: resultado.msgKey.remoteJid || channelId,
         id: resultado.msgKey.id,
@@ -38,10 +36,7 @@ export async function run({ m, args, db, conn }) {
       }
 
       if (key.remoteJid && key.id) {
-        // En grupos estándar, el borrado es directo con sendMessage({ delete: key })
         await conn.sendMessage(key.remoteJid, { delete: key })
-      } else {
-        console.warn('[⚠️] No se pudo reconstruir la llave del mensaje para borrarlo.')
       }
     } catch (e) {
       console.error('[❌] Error al intentar borrar mensaje del canal:', e.message)

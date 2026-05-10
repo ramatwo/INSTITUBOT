@@ -30,10 +30,10 @@ export async function run({ m, args, db, conn }) {
     return conn.reply(m.chat, resultado.msg, m)
   }
 
-  // Si ya fue enviado, intentar editarlo en WhatsApp
+  //editar en whatsapp si ya se envio
   if (resultado.fueEnviado && resultado.msgKey) {
     try {
-      const textoEditado = "*📣 • ANUNCIO OFICIAL (Editado)*\n\n" + nuevoContenido
+      const textoEditado = "*📣 • ANUNCIO OFICIAL (Editado)*\n\nEstimadas familias, se les informa que " + nuevoContenido
       await conn.sendMessage(resultado.msgKey.remoteJid, { 
         text: textoEditado, 
         edit: resultado.msgKey 
