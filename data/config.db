@@ -1,2 +1,3 @@
+{"clave":"cronHora","valor":"00:00","_id":"PPjLMe7enqMIX4sS"}
 {"$$indexCreated":{"fieldName":"clave","unique":true,"sparse":false}}
 {"$$indexCreated":{"fieldName":"clave","unique":true}}
