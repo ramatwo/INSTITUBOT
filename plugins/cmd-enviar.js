@@ -6,7 +6,7 @@ export async function run({ m, textoCompleto, userData, conn }) {
     return conn.reply(m.chat,
       `📣 *Enviar comunicado*\n\n` +
       `Uso: *${prefix}enviar [texto del aviso]*\n\n` +
-      `Ejemplo:\n_${prefix}enviar 🏫 Mañana no habrá clases por jornada institucional._`,
+      `Ejemplo:\n_${prefix}enviar 🏫 Mañana no habrá clases por jornada docente._`,
       m
     )
   }
@@ -23,16 +23,16 @@ export async function run({ m, textoCompleto, userData, conn }) {
   try {
     await conn.sendMessage(channelId, { text: textoCompleto.trim() })
     await conn.reply(m.chat,
-      `✅ *Comunicado publicado en el canal*\n\n` +
+      `[✅] *Publicado*\n\n` +
       `📝 Contenido:\n_${textoCompleto.trim()}_`,
       m
     )
   } catch (e) {
     console.error('[❌] Error al publicar en canal:', e.message)
     await conn.reply(m.chat,
-      `❌ No se pudo publicar el comunicado en el canal.\n` +
-      `Verificá que:\n• El ID del canal sea correcto\n• El bot sea administrador del canal\n\n` +
-      `Error: \`${e.message}\``,
+      `[❌] No se pudo publicar el comunicado en el canal.\n` +
+      `⚠️ Verificá que:\n• El ID del canal sea correcto\n• El bot sea administrador del canal\n\n` +
+      `❌ Error: \`${e.message}\``,
       m
     )
   }

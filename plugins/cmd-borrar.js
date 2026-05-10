@@ -4,7 +4,7 @@ export async function run({ m, args, db, conn }) {
 
   if (args.length < 1) {
     return conn.reply(m.chat,
-      `🗑️ *Borrar comunicado*\n\n` +
+      `[🗑️] *Borrar comunicado*\n\n` +
       `Uso: *${prefix}borrar [ID]*\n\n` +
       `Ejemplo: _${prefix}borrar abc12345_\n\n` +
       `Usá *${prefix}lista* para ver los IDs disponibles.`,
@@ -27,7 +27,7 @@ export async function run({ m, args, db, conn }) {
   }
 
   await conn.reply(m.chat,
-    `🗑️ *Comunicado eliminado*\n` +
+    `[🗑️] *Comunicado eliminado*\n` +
     (preview ? `\n📝 Contenido eliminado:\n~_${preview}_~` : ''),
     m
   )
