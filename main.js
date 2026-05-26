@@ -74,9 +74,9 @@ async function iniciarBot() {
   if (!credsExisten && !methodCodeQR && !methodCode) {
     const lineM = '─'.repeat(30)
     console.log(chalk.cyan(`\n┌${lineM}┐`))
-    console.log(chalk.cyan('│') + chalk.bold('  ¿Cómo querés conectar el bot?') + chalk.cyan('       │'))
+    console.log(chalk.cyan('│') + chalk.bold('  Método de conexion del bot') + chalk.cyan('       │'))
     console.log(chalk.cyan('│') + chalk.green('  1. Código QR ') + chalk.cyan('                       │'))
-    console.log(chalk.cyan('│') + chalk.yellow('  2. Código de emparejamiento (número)') + ' │')
+    console.log(chalk.cyan('│') + chalk.yellow('  2. Código de emparejamiento') + ' │')
     console.log(chalk.cyan(`└${lineM}┘`))
 
     do {
@@ -118,7 +118,7 @@ async function iniciarBot() {
       let numBot = global.botNumberCode || ''
 
       if (!numBot) {
-        numBot = await question(chalk.cyan('\n 📱 Ingresá el número del bot (con código de país, ej: +5491100000000): '))
+        numBot = await question(chalk.cyan('\n Ingresá el número del bot (con código de país y todo junto. ej: +5491167416972): '))
         numBot = numBot.replace(/\D/g, '')
       } else {
         numBot = numBot.replace(/\D/g, '')
@@ -130,7 +130,7 @@ async function iniciarBot() {
           codigo = codigo?.match(/.{1,4}/g)?.join('-') || codigo
           console.log(chalk.bold.bgMagenta('\n 🔑 CÓDIGO DE EMPAREJAMIENTO: ') + chalk.bold.white(` ${codigo} \n`))
         } catch (e) {
-          console.error(chalk.red('❌ Error al solicitar código de emparejamiento:'), e.message)
+          console.error(chalk.red('[ERROR] No se pudo mandar el codigo de emparejamiento:'), e.message)
         }
       }, 3000)
     }
@@ -141,7 +141,7 @@ async function iniciarBot() {
     const { connection, lastDisconnect, qr } = update
 
     if (qr && (opcion === '1' || methodCodeQR || !opcion)) {
-      console.log(chalk.cyan('\n[📱] Escaneá este QR con tu WhatsApp:\n'))
+      console.log(chalk.cyan('\nEscaneá este QR con tu WhatsApp:\n'))
       qrcode.generate(qr, { small: true })
     }
 

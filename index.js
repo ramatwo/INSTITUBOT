@@ -21,11 +21,11 @@ const hora = new Date().toLocaleString('es-AR', { hour12: false })
 
 console.log(chalk.cyan(`
   +------------------------------+
-  |      InstituBot  v1.0.0      |
+  |      InstituBot  v1.2.3      |
   |    Sistema de Comunicados    |
   +------------------------------+
   | OS:   ${os.type()} ${os.arch()}
-  | RAM:  ${ramLibre} GB libre / ${ramTotal} GB total
+  | RAM:  ${ramLibre}GB libre / ${ramTotal}GB total
   | HORA: ${hora}
   +------------------------------
 `))
@@ -51,9 +51,10 @@ async function start(file) {
   child.on('exit', (code) => {
     isRunning = false
     if (code !== 0 && code !== null) {
-      console.error(chalk.red(`\n[❌] El proceso terminó con código ${code}. Reiniciando al detectar cambios...`))
+      console.error(chalk.red(`\n[❌] El proceso terminó con código ${code}.`))
       watchFile(args[0], () => {
         unwatchFile(args[0])
+        //reiniciar proceso cuando agarra cambios 
         start(file)
       })
     }
